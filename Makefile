@@ -1,14 +1,14 @@
 
 CC = gcc
 INC = -I$(CURDIR)/include/
-CFLAGS = -g $(INC)
+CFLAGS = -g $(INC) -fms-extensions
 LDFLAGS = -lpthread
 
 OBJS_CLS = struct_cache_line.o 
 
 SRCS = $(OBJS_CLS:.o=.c)
 
-TARGET_CLS = sync_spl 
+TARGET_CLS = clsize
 
 .SUFFIXES : .c .o
 
