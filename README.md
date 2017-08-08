@@ -1,6 +1,6 @@
 My Simple Experiment.
 ===========================
-## 1. Adding paddint at tthe end of structure to fill a remainder of cacheline size is effective?
+## 1. False sharing
 ------------------------------------------------------------
 ####    Move read-write variables which are often written to by different threads onto  their own cache line.
 
@@ -32,8 +32,8 @@ My Simple Experiment.
     }
 ```
     + thread count : 8, interation count : 500000000, without lock
-    + odd number thread write to var_odd in odd number core 
-    + even number thread write to var_even in even number core
+    + odd number thread write to var_odd (in odd number core with affinity option)
+    + even number thread write to var_even (in even number core with affinity option)
         
         default : 11.234876 seconds
         cl_v1   : 11.544897 seconds
@@ -45,7 +45,7 @@ My Simple Experiment.
        
 
 
-## 2. How to use software prefetch and does it really effective?
+## 2. Explcit software perfetching
 --------------------------------------------------------------
-####    Todo.
+####    How to use software prefetch and does it really effective?
 
