@@ -1,0 +1,16 @@
+# started on Thu Sep 14 19:55:14 2017
+
+
+ Performance counter stats for './bin/ycsb load mongodb -P /home/son/install_utills/ycsb/conf/mongodb.prop -P /home/son/install_utills/ycsb/workloads/wb -threads 8 -s':
+
+    33,879,664,252      dTLB-loads                                                    (57.36%)
+        25,456,406      dTLB-load-misses          #    0.08% of all dTLB cache hits   (57.11%)
+    12,022,484,829      dTLB-stores                                                   (57.19%)
+         3,377,821      dTLB-store-misses                                             (57.36%)
+        93,754,663      iTLB-loads                                                    (57.36%)
+        12,744,402      iTLB-load-misses          #   13.59% of all iTLB cache hits   (57.41%)
+       750,418,328      cache-misses                                                  (57.31%)
+           232,802      page-faults                                                 
+
+       7.440020525 seconds time elapsed
+

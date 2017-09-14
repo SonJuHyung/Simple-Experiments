@@ -1,0 +1,3 @@
+mongodb.auth="true"
+mongodb.url = mongodb://localhost:27017/ycsb?w=0
+

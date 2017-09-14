@@ -1,0 +1,11 @@
+redis.clients.jedis.exceptions.JedisDataException: MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk. Commands that may modify the data set are disabled, because this instance is configured to report errors during writes if RDB snapshotting fails (stop-writes-on-bgsave-error option). Please check the Redis logs for details about the RDB error.
+	at redis.clients.jedis.Protocol.processError(Protocol.java:54)
+	at redis.clients.jedis.Protocol.process(Protocol.java:61)
+	at redis.clients.jedis.Protocol.read(Protocol.java:122)
+	at redis.clients.jedis.Connection.getStatusCodeReply(Connection.java:152)
+	at redis.clients.jedis.Jedis.hmset(Jedis.java:726)
+	at com.yahoo.ycsb.db.RedisClient.insert(RedisClient.java:121)
+	at com.yahoo.ycsb.DBWrapper.insert(DBWrapper.java:221)
+	at com.yahoo.ycsb.workloads.CoreWorkload.doInsert(CoreWorkload.java:562)
+	at com.yahoo.ycsb.ClientThread.run(Client.java:467)
+	at java.lang.Thread.run(Thread.java:748)
