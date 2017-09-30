@@ -1,3 +1,6 @@
 mongodb.auth="true"
 mongodb.url = mongodb://localhost:27017/ycsb?w=0
+# mongodb.database=THP_test
+# table=thp_test
+#operationcount=1000000
 

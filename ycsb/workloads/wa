@@ -30,20 +30,24 @@
 # table before the run phase. 
 #
 
-# available : 18G
+# available : G
 # 400B 크기의 length 가 10 개인 reecord.
 # 400B * 10 -> 4KB
 fieldlength=400
+#fieldlength=100
 fieldcount=10
+#fieldcount=10
 
-# 2M record generate
-# recordcount=4M
-# 400B 크기의 length 가 10개인 record 가 4 M 개
-# -> 16G
-recordcount=4000000
+# 26 M record generate
+# 1 KB 크기의 record 가 10개인 record 가 26 M 개
+# -> 30G
+recordcount=1000000
+#recordcount=6000000
+#recordcount=1
 
-operationcount=1000000
+# number of operation 
 #operationcount=1000
+operationcount=10000000
 
 # FIXME
 # The size of each field (in bytes)
