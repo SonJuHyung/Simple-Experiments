@@ -49,7 +49,7 @@ My Simple Experiment.
 --------------------------------------------------------------
 ####    THP related Redis, MongoDB expriment.
 
-## 3. Software Prefetch
+## 3. CloudSuite 3.0 basic experiment script
 --------------------------------------------------------------
-####    How to use software prefetch and does it really effective?
+####    CloudSuite 3.3 basic experiment script for THP test
 
