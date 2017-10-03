@@ -108,6 +108,7 @@ mkdir out
 DIR_CUR=$(pwd)
 DIR_PERF=${DIR_CUR}/perf
 DIR_RUN=${DIR_CUR}/out
+DIR_SYS=${DIR_SYS}/sys
 
 if [ ! -d $DIR_PERF ]
 then 
@@ -119,6 +120,10 @@ then
 	mkdir out
 fi
 
+if [ ! -d $DIR_SYS ]
+then
+    mkdir sys
+fi
 
 if [ "$1" = '-rps' ]; then
 	# default configuration
@@ -151,10 +156,12 @@ else
 		-s /usr/src/memcached/memcached_client/docker_servers.txt \
 		-w ${THREAD_NUM} -S ${SCALING_FACTOR} -D ${TARGET_SERVER_MEMORY} -j -T ${STATISTICS_INTERVAL}
 
+    source ./_check.sh > ${DIR_SYS}/sys_before.dat 
 	perf stat -e ${PMU_S} -o ${DIR_PERF}/perf_memcached.dat -a /usr/src/memcached/memcached_client//loader \
 		-a /usr/src/memcached/twitter_dataset/twitter_dataset_30x \
 		-s /usr/src/memcached/memcached_client/docker_servers.txt \
 		-g ${GET_SET_RATIO} -T ${STATISTICS_INTERVAL} -c ${CONNECTION_NUM} -w ${THREAD_NUM_2} > ${DIR_RUN}/run_memcached.dat
+    source ./_check.sh > ${DIR_SYS}/sys_after.dat    
 
 #	exec "$@"
 fi
