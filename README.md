@@ -47,9 +47,13 @@ My Simple Experiment.
 
 ## 2. YCSB/Redis, YCSB/MongoDB
 --------------------------------------------------------------
-####    THP related Redis, MongoDB expriment.
+####    Redis, MongoDB expriment script.
 
 ## 3. CloudSuite 3.0 basic experiment script
 --------------------------------------------------------------
-####    CloudSuite 3.3 basic experiment script for THP test
+####    CloudSuite 3.0 basic experiment script.
+
+## 4. Memory access pattern
+--------------------------------------------------------------
+####    Memory accesss pattern test for THP.
 
