@@ -3,9 +3,9 @@
 #include "thp.h"
 
 
-int main(){
-//    unsigned long long allocsize = 4*GB; 
-    unsigned long long allocsize = 40*KB; 
+void do_expr(int _allocsize){
+ //    unsigned long long allocsize = 4*GB; 
+    unsigned long long allocsize = _allocsize * GB; 
     unsigned long long  freq = allocsize / sizeof(node);  
     int fd ,i = 0, j=0, value=0;
     char filename[32] = {0,};
@@ -25,5 +25,10 @@ int main(){
         write(fd,"\n",1);
         close(fd);
     } 
+   
+}
+
+int main(){
+    do_expr(4);
 }
 
