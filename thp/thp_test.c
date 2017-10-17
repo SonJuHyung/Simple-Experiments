@@ -116,10 +116,11 @@ void print_status(unsigned long long count, unsigned long long index,struct rusa
 
     if(debug){
 //        fprintf(stdout,"%llu GB, %llu MB, %llu KB, %lf utime_usec,%lf stime_usec,%ld min fault,%ld maj fault \n", gb, mb, kb,utime_usec_sum,stime_usec_sum,total_minflt,total_majflt); 
-        fprintf(stdout,"%llu count,%llu,%llu GB,%llu MB,%llu KB,%lf utime_usec,%lf utime_usec_sum,%lf stime_usec,%lf stime_usec_sum,%ld min_fault,%ld min_fault_sum,%ld maj_fault,%ld maj_fault_sum \n", count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
+        fprintf(stdout,"%llu count,%llu,%llu GB,%llu MB,%llu KB,%lf utime_usec,%lf utime_usec_sum,%lf stime_usec,%lf stime_usec_sum,%lf usec,%lf usec_sum,%ld min_fault,%ld min_fault_sum,%ld maj_fault,%ld maj_fault_sum \n", 
+                count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,utime_usec+stime_usec,*utime_usec_sum+*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
     }else{
 //        fprintf(stdout,"%llu,%llu,%llu,%lf,%lf,%ld,%ld \n", gb, mb, kb,utime_usec_sum,stime_usec_sum,total_minflt,total_majflt); 
-        fprintf(stdout,"%llu,%llu,%llu,%llu,%llu,%lf,%lf,%lf,%lf,%ld,%ld,%ld,%ld \n", count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
+        fprintf(stdout,"%llu,%llu,%llu,%llu,%llu,%lf,%lf,%lf,%lf,%lf,%lf,%ld,%ld,%ld,%ld \n", count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,utime_usec+stime_usec,*utime_usec_sum+*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
     }
 }
 
@@ -130,7 +131,8 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     unsigned long long allocsize = _allocsize * GB, index=0,count=0; 
     int freq = allocsize / sizeof(node), fd, res; 
     double stime_usec_sum=0;
-    double utime_usec_sum=0;
+    double utime_usec_sum=0; 
+    double usec_sum=0;
     long minflt_sum=0;
     long majflt_sum=0;
     char *buffer = NULL, *ptr;
@@ -138,6 +140,8 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     struct stat stat;
 
     thp_node = (node*)memalign(PAGE_SIZE, allocsize);
+
+    sleep(5);
 
     if(type == RANDOM){ 
 //        fprintf(stdout,"\n thp test... random pattern data set from %s \n", filename);
@@ -173,7 +177,7 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
 
             getrusage(RUSAGE_SELF, &ru_start); 
 
-            (thp_node+arr[index])->val=index;
+            (thp_node+arr[index])->val=count;
 
             getrusage(RUSAGE_SELF, &ru_end);
 
@@ -184,11 +188,11 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     }else if(type == STRIDE){ 
 //        fprintf(stdout,"\n thp test... stride pattern data set %ld B unit \n", stride * sizeof(node));
 
-        for(count=0,index=0 ; index < freq ; index+=stride, thp_node++, count++){ 
+        for(count=0,index=0 ; index < freq ; index+=stride, thp_node+=stride, count++){ 
 
             getrusage(RUSAGE_SELF, &ru_start); 
 
-            thp_node->val=index;               
+            thp_node->val=count;    
 
             getrusage(RUSAGE_SELF, &ru_end);
 

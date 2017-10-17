@@ -1,0 +1,15 @@
+#!/usr/bin/stap 
+global time
+probe syscall.open {
+time[tid()] = gettimeofday_ns()
+
+}
+probe kernel.function("sys_open").return {
+if(time[tid()]) {
+    printf("sys_open took %d ns to execute\n",gettimeofday_ns() -
+    time[tid()])
+    delete time[tid()]
+
+}
+
+}
