@@ -56,4 +56,19 @@ My Simple Experiment.
 ## 4. Memory access pattern
 --------------------------------------------------------------
 ####    Memory accesss pattern test for THP.
+ * Simple Experiment
+----------------------
+```c
+    typedef struct node_test{
+        struct in{
+            int val;
+        };
+        char pad[PAGE_SIZE - sizeof(struct in)];
+    }__attribute__((aligned(PAGE_SIZE))) node;
+```
+    + stride access pattern in 4K unit, 2M unit
+    + random access pattern 
+
+    + "__alloc_pages_nodemask" execution time by ftrace by script
+    + overload record by perf script       
 
