@@ -79,11 +79,9 @@ case ${OP_TYPE} in
         DOCKER_IMAGE_CLIENT="cloudsuite/data-serving:client"
         NAME_SERVER="cassandra-server"        
         NAME_CLIENT="cassandra-client"
-        THREAD_NUM=64
-#        RCD_COUNT=1000000
-#        OPT_COUNT=10000000
-        RCD_COUNT=1000
-        OPT_COUNT=1000        
+        THREAD_NUM=`nproc`
+        RCD_COUNT=4000000
+        OPT_COUNT=10000000
         # system status
         source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 

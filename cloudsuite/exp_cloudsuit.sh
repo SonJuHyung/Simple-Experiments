@@ -187,7 +187,7 @@ case ${OP_TYPE} in
     "data_analytics") # MapReduce
 
         NETWORK="hadoop-net" 
-        DOCKER_IMAGE_SERVER="cloudsuite/data_analytics"
+        DOCKER_IMAGE_SERVER="cloudsuite/data-analytics"
         DOCKER_IMAGE_CLIENT="cloudsuite/hadoop"
         NAME_SERVER="master"
         NAME_CLIENT="slave"
@@ -199,15 +199,15 @@ case ${OP_TYPE} in
         # docker image 
         echo ""
         echo "  obtaining docker image ... ${DOCKER_IMAGE_SERVER}"
-        $(sudo docker pull ${DOCKER_IMAGE_SERVER})
+        sudo docker pull ${DOCKER_IMAGE_SERVER}
         echo ""
         echo "  obtaining docker image ... ${DOCKER_IMAGE_CLIENT}"
-        $(sudo docker pull ${DOCKER_IMAGE_CLIENT})
+        sudo docker pull ${DOCKER_IMAGE_CLIENT}
 
         # create network
         echo ""        
         echo "  creating network ... ${NETWORK}"
-        $(sudo docker network create ${NETWORK})
+        sudo docker network create ${NETWORK}
 
         # create container 
         echo ""
@@ -221,7 +221,7 @@ case ${OP_TYPE} in
         source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
         # data_analytics experiment
         echo "  running ${OP_TYPE} experiment ..."
-        $(sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker exec ${NAME_SERVER} benchmark > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat)
+        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker exec ${NAME_SERVER} benchmark > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
         source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
@@ -288,11 +288,11 @@ case ${OP_TYPE} in
         DOCKER_IMAGE_CLIENT="cloudsuite/data-serving:client"
         NAME_SERVER="cassandra-server"        
         NAME_CLIENT="cassandra-client"
-        THREAD_NUM=64
-#        RCD_COUNT=1000000
-#        OPT_COUNT=10000000
-        RCD_COUNT=1000
-        OPT_COUNT=1000
+        THREAD_NUM=`nproc`
+        RCD_COUNT=4000000
+        OPT_COUNT=10000000
+#        RCD_COUNT=1000
+#        OPT_COUNT=1000
 
 
         echo ""
@@ -322,8 +322,8 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/graph-analytics"        
         DOCKER_IMAGE_DATAST="cloudsuite/twitter-dataset-graph"
-        DRIVER_MEMORY="60g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="60g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="30g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="30g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
 #        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
 #        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"        
@@ -366,8 +366,8 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/in-memory-analytics"
         DOCKER_IMAGE_DATAST="cloudsuite/movielens-dataset"
-        DRIVER_MEMORY="60g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="60g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="30g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="30g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
 #        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
 #        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"
@@ -520,7 +520,7 @@ case ${OP_TYPE} in
         NAME_WEB_SERVER="web_server"
         NAME_CLIENT="faban_client"
 
-        WEB_SERVER_IP=220.149.250.11
+        WEB_SERVER_IP=220.149.236.109
 
         DATABASE_SERVER_IP=127.0.0.1
         MEMCACHED_SERVER_IP=127.0.0.1

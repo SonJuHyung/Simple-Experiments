@@ -1,0 +1,1 @@
+../ycsb/out_perf.sh

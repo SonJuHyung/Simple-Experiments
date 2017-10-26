@@ -41,7 +41,7 @@ fieldcount=10
 # 26 M record generate
 # 1 KB 크기의 record 가 10개인 record 가 26 M 개
 # -> 30G
-recordcount=1000000
+recordcount=4000000
 #recordcount=6000000
 #recordcount=1
 

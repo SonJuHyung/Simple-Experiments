@@ -140,6 +140,7 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     struct stat stat;
 
     thp_node = (node*)memalign(PAGE_SIZE, allocsize);
+//    thp_node = (node*)malloc(allocsize);
 
     sleep(5);
 
