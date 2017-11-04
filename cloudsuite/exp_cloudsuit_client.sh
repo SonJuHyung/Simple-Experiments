@@ -48,15 +48,7 @@ do
             HP_TYPE=$OPTARG
             ;;        
         f)
-            if [ $OPTARG == "nf" ] || [ $OPTARG == "f" ]
-            then
-                MFRG_TYPE=$OPTARG
-            else
-
-                echo "  error : mfrage must be nr of f"
-                usage 
-                exit 0
-            fi
+            MFRG_TYPE=$OPTARG
             ;;
         *)
             usage 
@@ -82,11 +74,13 @@ case ${OP_TYPE} in
         THREAD_NUM=`nproc`
         RCD_COUNT=4000000
         OPT_COUNT=10000000
+        RCD_FLD_LENGTH=400 
+        RCD_FLD_COUNT=10
         # system status
         source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         echo "  running ${OP_TYPE} experiment ..."      
-        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run -e RECORDCOUNT=${RCD_COUNT} -e OPERATIONCOUNT=$OPT_COUNT -e THREADS=$THREAD_NUM --name ${NAME_CLIENT} --net ${NETWORK} ${DOCKER_IMAGE_CLIENT} ${NAME_SERVER} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
+        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run -e RECORDCOUNT=${RCD_COUNT} -e OPERATIONCOUNT=${OPT_COUNT} -e THREADS=${THREAD_NUM} -e FIELDLENGTH=${RCD_FLD_LENGTH} -e FIELDCOUNT=${RCD_FLD_COUNT} --name ${NAME_CLIENT} --net ${NETWORK} ${DOCKER_IMAGE_CLIENT} ${NAME_SERVER} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
         source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
@@ -126,4 +120,8 @@ case ${OP_TYPE} in
 
         ;;
 esac
+
+PERF="perf"
+PERF_PID=$(pgrep ${PERF})
+kill -TERM ${PERF_PID}
 

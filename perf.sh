@@ -1,6 +1,7 @@
 #!/bin/bash
 # perf event list
 PERF_EVENT_LIST="dTLB-loads,dTLB-load-misses,dTLB-stores,dTLB-store-misses,iTLB-loads,iTLB-load-misses,cache-misses,page-faults,cycles"
+# LLC-loads,LLC-load-misses
 
 # ============================================================================================
 # (%) Cycles spent in page walks = (DTLB_LOAD_MISSES.WALK_DURATION + DTLB_STORE_MISSES.WALK_DURATION) /
@@ -109,58 +110,71 @@ PMU_D_CYCLE="r003C"
 #  eventnum=c0H
 PMU_D_INST_RETIRED="r00C0"
 
-# Load misses in all TLB levels that cause a page walk of any page size
+# Load misses in all TLB levels that cause a page walk of any page size -> o
 # DTLB_LOAD_MISSES.MISS_CAUSES_A_WALK
 #   umask=01H
 #   eventnum=08H
 PMU_D_DTLB_LMPW="r0108"
 
-# Store misses in all TLB levels that cause page walks.
+# Store misses in all TLB levels that cause page walks. -> o
 # DTLB_STORE_MISSES.MISS_CAUSES_A_WALK
 #   umask=01H
 #   eventnum=49H
 PMU_D_DTLB_SMPW="r0149"
 
-# Misses at all ITLB levels that cause page walks.
+# Misses at all ITLB levels that cause page walks. -> o
 # ITLB_MISSES.MISS_CAUSES_A_WALK
 #   umask=01H
 #   eventnum=85H
 PMU_D_ITLB_MPW="r0185"
 
-# Cycles when at least one PMH is busy with a walk for a load.
-# DTLB_LOAD_MISSES.WALK_ACTIVE
+# Counts 1 per cycle for each PMH that is busy with a page walk for a load. -> ?
+# DTLB_LOAD_MISSES.WALK_PENDING
 #  umask=10H
 #  eventnum=08H
 PMU_D_DTLB_LMWD="r1008"
 
-# Cycles when at least one PMH is busy with a page walk for a store.
+# Cycles when at least one PMH is busy with a page walk for a store. -> ?
+# Counts 1 per cycle for each PMH that is busy with a page walk for a store.
 # DTLB_STORE_MISSES.WALK_ACTIVE
+# DTLB_STORE_MISSES.WALK_PENDING
 #  umask=10H
 #  eventnum=49H
 PMU_D_DTLB_SMWD="r1049"
 
-# Counts 1 per cycle for each PMH that is busy with a page walk for an instruction fetch request.
+# Counts 1 per cycle for each PMH that is busy with a page walk for an instruction fetch request. -> ?
 # ITLB_MISSES.WALK_PENDING
 #  umask=10H
 #  eventnum=85H
 PMU_D_ITLB_MWD="r1085"
 
-# Load misses in all TLB levels causes a page walk that completes. (All page sizes.)
+# Load misses in all TLB levels causes a page walk that completes. (All page sizes.) ->0EH
 # DTLB_LOAD_MISSES.WALK_COMPLETED
 #  umask=02H/04H/08H/0eH
 #  eventnum=08H
-PMU_D_DTLB_LMWC="r0e08"
+PMU_D_DTLB_LMWC_4K="r0208"
+PMU_D_DTLB_LMWC_2M="r0408"
+PMU_D_DTLB_LMWC_1G="r0808"
+PMU_D_DTLB_LMWC_ALL="r0e08"
 
-# Counts completed page walks in any TLB levels due to store misses (all page sizes).
-# DTLB_STORE_MISSES.WALK_COMPLETED
+# Counts completed page walks in any TLB levels due to store misses (all page sizes). ->0EH
+# DTLB_STORE_MISSES.WALK_DURATION
 #  umask=02H/04H/08H/0eH
 #  eventnum=49H
-PMU_D_DTLB_SMWC="r0e49"
+PMU_D_DTLB_SMWC_4K="r0249"
+PMU_D_DTLB_SMWC_2M="r0449"
+PMU_D_DTLB_SMWC_1G="r0849"
+PMU_D_DTLB_SMWC_ALL="r0e49"
 
-# Counts completed page walks in any TLB level due to code fetch misses
+# Counts completed page walks in any TLB level due to code fetch misses -> 0EH
 # ITLB_MISSES.WALK_COMPLETED
 #  umask=02H/04H/08H/0eH
 #  eventnum=85H 
-PMU_D_ITLB_MWC="r0e85"
+PMU_D_ITLB_MWC_4K="r0285"
+PMU_D_ITLB_MWC_2M="r0485"
+PMU_D_ITLB_MWC_1G="r0885"
+PMU_D_ITLB_MWC_ALL="r0e85"
 
-PMU_D=${PERF_EVENT_LIST},${PMU_D_CYCLE},${PMU_D_INST_RETIRED},${PMU_D_DTLB_LMPW},${PMU_D_DTLB_SMPW},${PMU_D_ITLB_MPW},${PMU_D_DTLB_LMWD},${PMU_D_DTLB_SMWD},${PMU_D_ITLB_MWD},${PMU_D_DTLB_LMWC},${PMU_D_DTLB_SMWC},${PMU_D_ITLB_MWC}
+
+PMU_D=${PERF_EVENT_LIST},${PMU_D_CYCLE},${PMU_D_INST_RETIRED},${PMU_D_DTLB_LMPW},${PMU_D_DTLB_SMPW},${PMU_D_ITLB_MPW},${PMU_D_DTLB_LMWD},${PMU_D_DTLB_SMWD},${PMU_D_ITLB_MWD},${PMU_D_DTLB_LMWC_ALL},${PMU_D_DTLB_SMWC_ALL},${PMU_D_ITLB_MWC_ALL}
+

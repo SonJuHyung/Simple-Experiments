@@ -21,7 +21,7 @@
 #define MB (1024*1024)
 #define KB (1024)
 #define PAGE_SIZE 4*KB 
-
+#define HPAGE_SIZE 2*MB
 
 #define TRUE    1
 #define FALSE   0
@@ -40,3 +40,27 @@ typedef struct node_test{
     char pad[PAGE_SIZE - sizeof(struct in)];
 }__attribute__((aligned(PAGE_SIZE))) node;
 
+#define FROM_FILE 0
+#define DEBUG 0
+
+typedef struct hnode_test{
+    struct hin{
+        int val;
+        struct list_head list_head;
+    };
+    char pad[PAGE_SIZE - sizeof(struct in)];
+}__attribute__((aligned(HPAGE_SIZE))) hnode;
+
+typedef struct hnode_test{
+    struct hin{
+        int val;
+        struct list_head list_head;
+    };
+    char pad[PAGE_SIZE - sizeof(struct in)];
+}__attribute__((aligned(HPAGE_SIZE))) hnode;
+
+
+struct hnode_manager{
+    int num;
+    struct list_head list;
+};

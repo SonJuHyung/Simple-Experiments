@@ -1,0 +1,1 @@
+/home/son/chech_mem.sh

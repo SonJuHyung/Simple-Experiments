@@ -160,15 +160,7 @@ do
             HP_TYPE=$OPTARG
             ;;        
         f)
-            if [ $OPTARG == "nf" ] || [ $OPTARG == "f" ]
-            then
-                MFRG_TYPE=$OPTARG
-            else
-
-                echo "  error : mfrage must be nr of f"
-                usage 
-                exit 0
-            fi
+            MFRG_TYPE=$OPTARG
             ;;
         *)
             usage 
@@ -291,8 +283,8 @@ case ${OP_TYPE} in
         THREAD_NUM=`nproc`
         RCD_COUNT=4000000
         OPT_COUNT=10000000
-#        RCD_COUNT=1000
-#        OPT_COUNT=1000
+        RCD_FLD_LENGTH=400 
+        RCD_FLD_COUNT=10
 
 
         echo ""
@@ -584,4 +576,8 @@ case ${OP_TYPE} in
 
         ;;
 esac
+
+PERF="perf"
+PERF_PID=$(pgrep ${PERF})
+kill -TERM ${PERF_PID}
 

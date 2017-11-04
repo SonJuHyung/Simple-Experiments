@@ -7,17 +7,18 @@ ACTION=""
 # data set size 
 INPUT=""
 # number of threads.
-NTHREAD=0
+NTHREAD=$(npoc)
 # benchmark
 BENCHMARK=""
 # nhp or thp
 HP_TYPE=""
+M_FRG=""
 
 usage()
 {
     echo ""
-    echo "  usage : # ./exp_parsec.sh -a build -p ferret -h thp"   
-    echo "        : # ./exp_parsec.sh -a run -p canneal -i native -n 8 -h nhp"
+    echo "  usage : # ./exp_parsec.sh -a build -p ferret -h thp -f f"   
+    echo "        : # ./exp_parsec.sh -a run -p canneal -i native -h nhp -f nf"
     echo ""        
     echo "          <workk loads>" 
     echo "			        blackscholes - Option pricing with Black-Scholes Partial Differential Equation (PDE)"
@@ -45,7 +46,7 @@ then
     exit 
 fi
 
-while getopts a:i:n:p:h: opt 
+while getopts a:i:p:h:f: opt 
 do
     case $opt in
         a)
@@ -68,18 +69,12 @@ do
                 exit 0
             fi           
             ;;
-        n)
-            if [ $OPTARG -ne 0 ]
-            then
-                NTHREAD=$OPTARG
-            else  
-                echo "  error : number of thread must be set" 
-                usage 
-                exit 0
-            fi           
-            ;;        
         p)
             BENCHMARK=$OPTARG
+            ;;
+        f)
+            M_FRG=$OPTARG
+
             ;;
         h)
             if [ $OPTARG == "thp" ] || [ $OPTARG == "nhp" ]
@@ -110,22 +105,27 @@ fi
 #fi
 DIR_PARSEC=$(pwd) 
 PERF_LIST=${DIR_PARSEC}/../perf.sh
-DIR_OUTPUT_OPT=${DIR_PARSEC}/run
-DIR_OUTPUT_PERF=${DIR_PARSEC}/perf
+DIR_OUTPUT_OPT=${DIR_PARSEC}/run/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${M_FRAG}.dat
+DIR_OUTPUT_PERF=${DIR_PARSEC}/perf/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${M_FRG}.dat
 
 source ${PERF_LIST} 
 
 echo ""
 echo "PWD : ${DIR_PARSEC}" 
-echo "PERF_LIST : ${PMU_D}"
+echo "PERF_LIST : ${PMU_S}"
 echo ""
-echo "perf stat -e ${PMU_D} -o ${DIR_OUTPUT_PERF}/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${NTHREAD}.dat -a ./parsec-3.0/bin/parsecmgmt -a ${ACTION} -p ${BENCHMARK} -i ${INPUT} -n ${NTHREAD} > ${DIR_OUTPUT_OPT}/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${NTHREAD}.dat"
+echo "perf stat -e ${PMU_S} -o ${DIR_OUTPUT_PERF} -a ./parsec-3.0/bin/parsecmgmt -a ${ACTION} -p ${BENCHMARK} -i ${INPUT} -n ${NTHREAD} > ${DIR_OUTPUT_OPT}/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${NTHREAD}.dat"
 echo ""
 
 if [ $ACTION == "run" ]
 then
-    perf stat -e ${PMU_D} -o ${DIR_OUTPUT_PERF}/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${NTHREAD}.dat -a ./parsec-3.0/bin/parsecmgmt -a ${ACTION} -p ${BENCHMARK} -i ${INPUT} -n ${NTHREAD} > ${DIR_OUTPUT_OPT}/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${NTHREAD}.dat 
+    perf stat -e ${PMU_S} -o ${DIR_OUTPUT_PERF} -a ./parsec-3.0/bin/parsecmgmt -a ${ACTION} -p ${BENCHMARK} -i ${INPUT} -n ${NTHREAD} > ${DIR_OUTPUT_OPT} 
 else
     ./parsec-3.0/bin/parsecmgmt -a ${ACTION} -p ${BENCHMARK}
 fi
+
+PERF="perf"
+PERF_PID=$(pgrep ${PERF})
+kill -TERM ${PERF_PID}
+
 

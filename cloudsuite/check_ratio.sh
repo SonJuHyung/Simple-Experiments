@@ -1,0 +1,1 @@
+/home/son/check_ratio.sh

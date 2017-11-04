@@ -31,7 +31,7 @@ void thp_ex_usage(char *cmd)
 void thp_ex_example(char *cmd)
 {
     fprintf(stdout,"\n Example : \n");
-    fprintf(stdout,"    #sudo %s -a 4 -t stride -s 1 \n", cmd);
+    fprintf(stdout,"    #sudo %s -a 4 -t stride -s 1 -w\n", cmd);
     fprintf(stdout,"    #sudo %s -a 4 -t random -f data/thp_rand_set_1.txt -d \n\n", cmd);
 }
 
@@ -120,14 +120,111 @@ void print_status(unsigned long long count, unsigned long long index,struct rusa
                 count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,utime_usec+stime_usec,*utime_usec_sum+*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
     }else{
 //        fprintf(stdout,"%llu,%llu,%llu,%lf,%lf,%ld,%ld \n", gb, mb, kb,utime_usec_sum,stime_usec_sum,total_minflt,total_majflt); 
-        fprintf(stdout,"%llu,%llu,%llu,%llu,%llu,%lf,%lf,%lf,%lf,%lf,%lf,%ld,%ld,%ld,%ld \n", count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,utime_usec+stime_usec,*utime_usec_sum+*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
+        fprintf(stdout,"%llu,%llu,%llu,%llu,%llu,%lf,%lf,%lf,%lf,%lf,%lf,%ld,%ld,%ld,%ld \n", 
+                count,index,gb,mb,kb,utime_usec,*utime_usec_sum,stime_usec,*stime_usec_sum,utime_usec+stime_usec,*utime_usec_sum+*stime_usec_sum,minflt,*minflt_sum,majflt,*majflt_sum);
     }
 }
 
-void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
+void do_expr_v2(int type, int debug, char *filename, int stride, int _allocsize,int wait){
+    struct hnode_manager manager = {0,};
+    struct hnode_test *hnode=NULL;
+    struct list_head *entry;
+    struct rusage ru_start, ru_end, ru_result;
+    unsigned long long allocsize = _allocsize * GB, index=0,val=0; 
+    int freq = allocsize / sizeof(struct hnode_test),j,temp,temp2,fd,res; 
+    double stime_usec_sum=0;
+    double utime_usec_sum=0; 
+    double usec_sum=0;
+    long minflt_sum=0;
+    long majflt_sum=0;
+    char *buffer = NULL, *ptr;
+    char buffer_t[32] = {0,};
+
+    int *arr = NULL;
+    struct stat stat;
+    INIT_LIST_HEAD(&manager.list);
+    sleep(5);
+
+    if(type == RANDOM){ 
+        
+        printf("not implemented\n");
+
+    }else if(type == STRIDE){ 
+
+        for(val=0,index=0 ; index < freq ; index++, val++){ 
+
+            getrusage(RUSAGE_SELF, &ru_start); 
+
+            hnode = (struct hnode_test*)memalign(HPAGE_SIZE,sizeof(struct hnode_test));
+            hnode->val = val;
+
+            getrusage(RUSAGE_SELF, &ru_end);
+
+            rusage_diff(&ru_start, &ru_end, &ru_result);
+            print_status(val,index, &ru_result, &stime_usec_sum, &utime_usec_sum, &minflt_sum, &majflt_sum, debug);
+
+            manager.num++;
+
+            __list_add(&hnode->list_head,&manager.list,manager.list.next);
+
+        }
+
+        printf("%d\n",freq);
+//        printf("%ld\n",sizeof(struct hnode_test));
+
+/*        
+        srand(time(NULL));
+        temp2 = freq;
+
+        for(index=0 ; index < freq/3 ; index++){ 
+           
+            // FIXME  to read from data.txt
+            do{
+                temp = rand()%temp2;
+            }while(temp == manager.num || temp==0);
+            temp2--; 
+
+            snprintf(buffer_t, sizeof(buffer_t), "%d,", temp);
+            write(fd, buffer_t, strlen(buffer_t));
+
+            entry = &manager.list; 
+            for(j=0; j < temp ; j++){
+                entry = entry->next;
+            }
+            __list_del(entry->prev,entry->next);
+            manager.num--;
+            hnode = list_entry(entry,struct hnode_test, list_head);
+            if(hnode != NULL){                               
+                free(hnode);
+            }
+
+        }
+        */
+        
+#if DEBUG
+        list_for_each_entry(hnode,&manager.list,list_head){
+            printf("%d\n",hnode->val);
+        }
+#endif 
+    }else{
+        fprintf(stdout, "   type error \n");
+    }
+       
+   if(wait) 
+        while(1){}
+
+
+   while(list_empty(&manager.list)){
+       __list_del(&manager.list,manager.list.next);
+       manager.num--;
+
+   }
+
+}
+
+void do_expr(int type, int debug, char *filename, int stride, int _allocsize,int wait){
     node *thp_node; 
     struct rusage ru_start, ru_end, ru_result;
-//    unsigned long long allocsize = 4*GB;    
     unsigned long long allocsize = _allocsize * GB, index=0,count=0; 
     int freq = allocsize / sizeof(node), fd, res; 
     double stime_usec_sum=0;
@@ -140,12 +237,10 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     struct stat stat;
 
     thp_node = (node*)memalign(PAGE_SIZE, allocsize);
-//    thp_node = (node*)malloc(allocsize);
 
     sleep(5);
 
     if(type == RANDOM){ 
-//        fprintf(stdout,"\n thp test... random pattern data set from %s \n", filename);
         
         arr = (int*)calloc(freq,sizeof(int));
 
@@ -172,7 +267,6 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
             ptr = strtok(NULL, ",");
         }
 
-//        printf(" thp random data set memory size : %llu GB \n", index * sizeof(node) / GB);
 
         for(count=0,index=0 ; index < freq ; index+=stride,count++){ 
 
@@ -186,8 +280,9 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
             print_status(count,arr[index], &ru_result, &stime_usec_sum, &utime_usec_sum, &minflt_sum, &majflt_sum, debug);
         }
 
+        close(fd);
+
     }else if(type == STRIDE){ 
-//        fprintf(stdout,"\n thp test... stride pattern data set %ld B unit \n", stride * sizeof(node));
 
         for(count=0,index=0 ; index < freq ; index+=stride, thp_node+=stride, count++){ 
 
@@ -204,21 +299,25 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize){
     }else{
         fprintf(stdout, "   eype error \n");
     }
-    //    while(1){}
+       
+   if(wait) 
+        while(1){}
 
-    close(fd);
 }
 
 int main(int argc, char *argv[]){
 
     char op;
-    int fd, type=ERR, debug=0, stride=0, allocsize=0;
+    int fd, type=ERR, debug=0, stride=0, allocsize=0,wait=0;
     char *filename= NULL;
 
     optind = 0;
 
-    while ((op = getopt(argc, argv, "a:dt:f:s:")) != -1) {
+    while ((op = getopt(argc, argv, "a:dt:f:s:w")) != -1) {
         switch (op) { 
+            case 'w':
+                wait = 1;
+                break; 
             case 'a':
                 allocsize = atoi(optarg);
                 break; 
@@ -267,7 +366,8 @@ int main(int argc, char *argv[]){
                 goto INVALID_ARGS;                
             }
         }
-        do_expr(type,debug,filename, stride,allocsize); 
+//        do_expr(type,debug,filename, stride,allocsize,wait);  
+        do_expr_v2(type,debug,filename, stride,allocsize,wait); 
     }else{
         goto INVALID_ARGS;
     }
