@@ -7,23 +7,21 @@ OP=$4
 
 OUT_FILE=perf_record/perf_record_${THP_TYPE}_${WORKLOAD}_${VERSION}
 
-usage(){
+usage()
+{
     echo ""
-    echo "  ./script_perf.sh thp data_analytics v2 record"
+    echo "  usage : # ./script_perf.sh thp canneal v2 record"
     echo ""
 }
 
 if [ $# -ne 4 ]
 then 
-    echo "wrong usage"
     usage
     exit
 fi
     
 if [ $OP == "record" ]
 then
-    PGM="thp_test"
-    PID=$(pgrep $PGM) 
 #    perf record -p $PID -o ${OUT_FILE} 
     perf record -a -o ${OUT_FILE}
 elif [ $OP == "report" ]      

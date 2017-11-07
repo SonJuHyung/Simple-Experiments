@@ -7,7 +7,7 @@ ACTION=""
 # data set size 
 INPUT=""
 # number of threads.
-NTHREAD=$(npoc)
+NTHREAD=8
 # benchmark
 BENCHMARK=""
 # nhp or thp
@@ -95,7 +95,7 @@ done
 
 #if [ $ACTION != "build" ]
 #then
-if [  -z $ACTION ] || [ $NTHREAD -eq 0 ] || [ -z $INPUT ] || [ -z $BENCHMARK ] || [ -z $HP_TYPE ]
+if [  -z $ACTION ] || [ -z $INPUT ] || [ -z $BENCHMARK ] || [ -z $HP_TYPE ]
 then 
     usage
     exit 0
@@ -105,7 +105,7 @@ fi
 #fi
 DIR_PARSEC=$(pwd) 
 PERF_LIST=${DIR_PARSEC}/../perf.sh
-DIR_OUTPUT_OPT=${DIR_PARSEC}/run/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${M_FRAG}.dat
+DIR_OUTPUT_OPT=${DIR_PARSEC}/run/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${M_FRG}.dat
 DIR_OUTPUT_PERF=${DIR_PARSEC}/perf/${PGM}-${HP_TYPE}-${BENCHMARK}-${INPUT}-${M_FRG}.dat
 
 source ${PERF_LIST} 
