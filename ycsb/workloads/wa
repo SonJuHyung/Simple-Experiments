@@ -47,7 +47,8 @@ recordcount=4000000
 
 # number of operation 
 #operationcount=1000
-operationcount=10000000
+#operationcount=10000000
+operationcount=1000000000
 
 # FIXME
 # The size of each field (in bytes)

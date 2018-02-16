@@ -143,7 +143,7 @@ void do_expr_v2(int type, int debug, char *filename, int stride, int _allocsize,
     int *arr = NULL;
     struct stat stat;
     INIT_LIST_HEAD(&manager.list);
-    sleep(5);
+    sleep(30);
 
     if(type == RANDOM){ 
         
@@ -237,8 +237,8 @@ void do_expr(int type, int debug, char *filename, int stride, int _allocsize,int
     struct stat stat;
 
     thp_node = (node*)memalign(PAGE_SIZE, allocsize);
-
-    sleep(5);
+    if(wait)
+        sleep(30);
 
     if(type == RANDOM){ 
         
@@ -366,8 +366,8 @@ int main(int argc, char *argv[]){
                 goto INVALID_ARGS;                
             }
         }
-//        do_expr(type,debug,filename, stride,allocsize,wait);  
-        do_expr_v2(type,debug,filename, stride,allocsize,wait); 
+        do_expr(type,debug,filename, stride,allocsize,wait);  
+//        do_expr_v2(type,debug,filename, stride,allocsize,wait); 
     }else{
         goto INVALID_ARGS;
     }

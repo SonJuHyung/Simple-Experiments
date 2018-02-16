@@ -48,16 +48,9 @@ typedef struct hnode_test{
         int val;
         struct list_head list_head;
     };
-    char pad[PAGE_SIZE - sizeof(struct in)];
+    char pad[HPAGE_SIZE - sizeof(struct in)];
 }__attribute__((aligned(HPAGE_SIZE))) hnode;
 
-typedef struct hnode_test{
-    struct hin{
-        int val;
-        struct list_head list_head;
-    };
-    char pad[PAGE_SIZE - sizeof(struct in)];
-}__attribute__((aligned(HPAGE_SIZE))) hnode;
 
 
 struct hnode_manager{

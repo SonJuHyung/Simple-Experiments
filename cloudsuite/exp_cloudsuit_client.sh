@@ -121,6 +121,8 @@ case ${OP_TYPE} in
         ;;
 esac
 
+source /home/son/chech_mem.sh > sys/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
+
 PERF="perf"
 PERF_PID=$(pgrep ${PERF})
 kill -TERM ${PERF_PID}
