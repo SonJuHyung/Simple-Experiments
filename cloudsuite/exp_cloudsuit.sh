@@ -231,7 +231,7 @@ case ${OP_TYPE} in
         NAME_SERVER="dc_server"
         NAME_CLIENT="dc_client"
         THREAD_NUM=$(nproc)
-        MEM_SIZE=257852 # MB unit
+        MEM_SIZE=8192 # MB unit
         OBJ_SIZE_MIN=550
         DIR_VOLUME=${DIR_CUR}/volume/
 
@@ -281,7 +281,7 @@ case ${OP_TYPE} in
         NAME_SERVER="cassandra-server"        
         NAME_CLIENT="cassandra-client"
         THREAD_NUM=`nproc`
-        RCD_COUNT=4000000
+        RCD_COUNT=1572864
         OPT_COUNT=10000000
         RCD_FLD_LENGTH=400 
         RCD_FLD_COUNT=10
@@ -314,8 +314,8 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/graph-analytics"        
         DOCKER_IMAGE_DATAST="cloudsuite/twitter-dataset-graph"
-        DRIVER_MEMORY="30g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="30g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="8g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="8g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
 #        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
 #        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"        
@@ -358,8 +358,8 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/in-memory-analytics"
         DOCKER_IMAGE_DATAST="cloudsuite/movielens-dataset"
-        DRIVER_MEMORY="30g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="30g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="8g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="8g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
 #        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
 #        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"
@@ -464,7 +464,7 @@ case ${OP_TYPE} in
         NAME_SERVER="server"
         NAME_CLIENT="client"
         PORT_NUM=8393
-        JAVA_P_MEM_SZ="60g" # The pregenerated Solr index occupies 12GB of memory, and therefore we use 12g to avoid disk accesses. 
+        JAVA_P_MEM_SZ="8g" # The pregenerated Solr index occupies 12GB of memory, and therefore we use 12g to avoid disk accesses. 
         NODE_COUNT=1
         SERVER_ADDRESS="172.20.0.2"
         NUM_CON_CLI=50 # number of concurrent client

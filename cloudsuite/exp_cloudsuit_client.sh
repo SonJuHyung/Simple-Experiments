@@ -72,7 +72,7 @@ case ${OP_TYPE} in
         NAME_SERVER="cassandra-server"        
         NAME_CLIENT="cassandra-client"
         THREAD_NUM=`nproc`
-        RCD_COUNT=4000000
+        RCD_COUNT=1572864
         OPT_COUNT=10000000
         RCD_FLD_LENGTH=400 
         RCD_FLD_COUNT=10
@@ -93,7 +93,7 @@ case ${OP_TYPE} in
         NAME_SERVER="server"        
         NAME_CLIENT="client"
         PORT_NUM=8393
-        JAVA_P_MEM_SZ="60g" # The pregenerated Solr index occupies 12GB of memory, and therefore we use 12g to avoid disk accesses. 
+        JAVA_P_MEM_SZ="8g" # The pregenerated Solr index occupies 12GB of memory, and therefore we use 12g to avoid disk accesses. 
         NODE_COUNT=1
         SERVER_ADDRESS=172.20.0.2
         NUM_CON_CLI=50 # number of concurrent client
