@@ -1,5 +1,5 @@
 #!/bin/bash 
-DIR=run
+DIR=$1
 mkdir -p ${DIR}/data_analytics/thp
 mkdir -p ${DIR}/data_caching/thp
 mkdir -p ${DIR}/data_serving/thp
