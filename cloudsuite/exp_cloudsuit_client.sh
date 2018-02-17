@@ -77,13 +77,13 @@ case ${OP_TYPE} in
         RCD_FLD_LENGTH=400 
         RCD_FLD_COUNT=10
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         echo "  running ${OP_TYPE} experiment ..."      
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run -e RECORDCOUNT=${RCD_COUNT} -e OPERATIONCOUNT=${OPT_COUNT} -e THREADS=${THREAD_NUM} -e FIELDLENGTH=${RCD_FLD_LENGTH} -e FIELDCOUNT=${RCD_FLD_COUNT} --name ${NAME_CLIENT} --net ${NETWORK} ${DOCKER_IMAGE_CLIENT} ${NAME_SERVER} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
        
         ;;
     "web_search") 
@@ -106,7 +106,7 @@ case ${OP_TYPE} in
         sudo docker pull ${DOCKER_IMAGE_CLIENT}
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         echo ""
         echo "  start ${DOCKER_IMAGE_CLIENT} container ..."
@@ -116,7 +116,7 @@ case ${OP_TYPE} in
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run -it --name ${NAME_CLIENT} --net ${NETWORK} ${DOCKER_IMAGE_CLIENT} ${SERVER_ADDRESS} ${NUM_CON_CLI} ${TIME_WARMUP} ${TIME_STEADY} ${TIME_ENDING} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat 
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         ;;
 esac

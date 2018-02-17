@@ -210,13 +210,13 @@ case ${OP_TYPE} in
         sudo docker run -d --net ${NETWORK} --name ${NAME_CLIENT} --hostname ${NAME_CLIENT} ${DOCKER_IMAGE_CLIENT} ${NAME_CLIENT}
         
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
         # data_analytics experiment
         echo "  running ${OP_TYPE} experiment ..."
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker exec ${NAME_SERVER} benchmark > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         echo ""
         clear_container ${NETWORK}
@@ -340,14 +340,14 @@ case ${OP_TYPE} in
         sudo docker create --name ${NAME_DATA} ${DOCKER_IMAGE_DATAST}
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         echo ""
         echo "  running ${OP_TYPE} experiment ..."      
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} --driver-memory ${DRIVER_MEMORY} --executor-memory ${EXECUTOR_MEMORY} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         echo ""
         clear_container ${NETWORK}
@@ -385,7 +385,7 @@ case ${OP_TYPE} in
         sudo docker create --name ${NAME_DATA} ${DOCKER_IMAGE_DATAST}
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         # run 
         echo ""
@@ -393,7 +393,7 @@ case ${OP_TYPE} in
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} /data/ml-latest-small /data/myratings.csv --driver-memory ${DRIVER_MEMORY} --executor-memory ${EXECUTOR_MEMORY} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         echo ""
         clear_container ${NETWORK}
@@ -441,7 +441,7 @@ case ${OP_TYPE} in
         sudo docker run -d --name ${NAME_SERVER} --volumes-from ${NAME_DATASET} --net ${NETWORK} ${DOCKER_IMAGE_SERVER}
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat
 
         echo ""
         echo "  start ${DOCKER_IMAGE_CLIENT} container ..."
@@ -451,7 +451,7 @@ case ${OP_TYPE} in
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run -t --name=${NAME_CLIENT} -v ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}:/output --volumes-from ${NAME_DATASET} --net ${NETWORK} ${DOCKER_IMAGE_CLIENT} ${NAME_SERVER} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         echo ""
         clear_container ${NETWORK}
@@ -558,7 +558,7 @@ case ${OP_TYPE} in
         sleep 2
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat         
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-before.dat         
 
         echo ""
         echo "  start ${DOCKER_IMAGE_CLIENT} container ..."
@@ -568,7 +568,7 @@ case ${OP_TYPE} in
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --net=${NETWORK} -v  ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}:/faban/output --name=${NAME_CLIENT} ${DOCKER_IMAGE_CLIENT} ${WEB_SERVER_IP} ${LOAD_SCALE} 
 
         # system status
-        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
+#        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
 
         echo ""
         clear_container ${NETWORK}
