@@ -16,88 +16,6 @@ function usage()
     echo ""
     echo "  usage : # ./exp_cloudsuit.sh -p data_analytics -h nhp -f nf"
     echo "        : # ./exp_cloudsuit.sh -p data_caching -h hp -f f"
-    echo ""        
-    echo "          <workk loads>" 
-    echo "                  data_analytics(MapReduce)"
-    echo "                      The explosion of accessible human-generated information necessitates auto"
-    echo "                      mated analytical processing to cluster, classify, and filter this informa"
-    echo "                      tion. The MapReduce paradigm has emerged as a popular approach to handlin"
-    echo "                      g large-scale analysis, farming out requests to a cluster of nodes that f"
-    echo "                      irst perform filtering and transformation of the data (map) and then aggr"
-    echo "                      egate the results (reduce). The Data Analytics benchmark is included in C"
-    echo "                      loudSuite to cover the increasing importance of machine learning tasks an"
-    echo "                      alyzing large amounts of data in datacenters using the MapReduce framewor"
-    echo "                      k. It is composed of Mahout, a set of machine learning libraries, running" 
-    echo "                      on top of Hadoop, an open-source implementation of MapReduce. The benchma"
-    echo "                      rk consists of running a Naive Bayes classifier on a Wikimedia dataset. I"
-    echo "                      t uses Hadoop version 2.7.3 and Mahout version 0.12.2."
-    echo ""
-    echo "                  data_caching(Memcached)"
-    echo "                      This benchmark uses the Memcached data caching server, simulating the beh"
-    echo "                      avior of a Twitter caching server using a twitter dataset. The metric of "
-    echo "                      interest is throughput expressed as the number of requests served per sec"
-    echo "                      ond. The workload assumes strict quality of service guarantees."
-    echo ""
-    echo "                  data_serving(YCSB)"
-    echo "                      The data serving benchmark relies on the Yahoo! Cloud Serving Benchmark  "
-    echo "                      (YCSB). YCSB is a framework to benchmark data store systems. This framewo"
-    echo "                      rk comes with appropriate interfaces to populate and stress many popular "
-    echo "                      data serving systems. Here we provide the instructions and pointers to do"
-    echo "                      wnload and install YCSB and use it with the Cassandra data store."
-    echo ""
-    echo "                  graph_analytics(Cloudsuite)"
-    echo "                      This repository contains the docker image for Cloudsuite’s Graph Analytic"
-    echo "                      s benchmark.The Graph Analytics benchmark relies the Spark framework to p"
-    echo "                      erform graph analytics on large-scale datasets. Apache provides a graph p"
-    echo "                      rocessing library, GraphX, designed to run on top of Spark. The benchmark" 
-    echo "                      performs PageRank on a Twitter dataset."
-    echo ""
-    echo "                  inmemory_analytics(Spark)"
-    echo "                      This benchmark uses Apache Spark and runs a collaborative filtering algor"
-    echo "                      ithm in-memory on a dataset of user-movie ratings. The metric of interest"
-    echo "                      is the time in seconds of computing movie recommendations.The explosion o"
-    echo "                      f accessible human-generated information necessitates automated analytica"
-    echo "                      l processing to cluster, classify, and filter this information. Recommend"
-    echo "                      er systems are a subclass of information filtering system that seek to pr"
-    echo "                      edict the ‘rating’ or ‘preference’ that a user would give to an item. Rec"
-    echo "                      ommender systems have become extremely common in recent years, and are ap"
-    echo "                      plied in a variety of applications. The most popular ones are movies, mus"
-    echo "                      ic, news, books, research articles, search queries, social tags, and prod"
-    echo "                      ucts in general. Because these applications suffer from I/O operations, n"
-    echo "                      owadays, most of them are running in memory. This benchmark runs the alte"
-    echo "                      rnating least squares (ALS) algorithm which is provided by Spark MLlib."
-    echo ""
-    echo "                  media_streaming(Nginx)"
-    echo "                      This benchmark uses the Nginx web server as a streaming server for hosted" 
-    echo "                      videos of various lengths and qualities. The client, based on httperf’s w"
-    echo "                      sesslog session generator, generates a request mix for different videos, "
-    echo "                      to stress the server."
-    echo ""
-    echo "                  web_search(Solr)"
-    echo "                      This repository contains the docker image for Cloudsuite’s Web Search ben"
-    echo "                      chmark.The Web Search benchmark relies on the Apache Solr search engine f"
-    echo "                      ramework. The benchmark includes a client machine that simulates real-wor"
-    echo "                      ld clients that send requests to the index nodes. The index nodes contain" 
-    echo "                      an index of the text and fields found in a set of crawled websites."
-    echo ""
-    echo "                  web_serving"
-    echo "                      Web Serving is a main service in the cloud. Traditional web services with"
-    echo "                      dynamic and static content are moved into the cloud to provide fault-tole"
-    echo "                      rance and dynamic scalability by bringing up the needed number of servers" 
-    echo "                      behind a load balancer. Although many variants of the traditional web sta"
-    echo "                      ck are used in the cloud (e.g., substituting Apache with other web server" 
-    echo "                      software or using other language interpreters in place of PHP), the under"
-    echo "                      lying service architecture remains unchanged. Independent client requests" 
-    echo "                      are accepted by a stateless web server process which either directly serv"
-    echo "                      es static files from disk or passes the request to a stateless middleware"
-    echo "                      script, written in a high-level interpreted or byte-code compiled languag"
-    echo "                      e, which is then responsible for producing dynamic content. All the state"
-    echo "                      information is stored by the middleware in backend databases such as clou"
-    echo "                      d NoSQL data stores or traditional relational SQL servers supported by ke"
-    echo "                      y-value cache servers to achieve high throughput and low latency. This be"
-    echo "                      nchmark includes a social networking engine (Elgg) and a client implement"
-    echo "                      ed using the Faban workload generator."
-    echo ""
     echo ""
 }
 
@@ -231,7 +149,7 @@ case ${OP_TYPE} in
         NAME_SERVER="dc_server"
         NAME_CLIENT="dc_client"
         THREAD_NUM=$(nproc)
-        MEM_SIZE=8192 # MB unit
+        MEM_SIZE=30000 # MB unit
         OBJ_SIZE_MIN=550
         DIR_VOLUME=${DIR_CUR}/volume/
 
@@ -314,10 +232,10 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/graph-analytics"        
         DOCKER_IMAGE_DATAST="cloudsuite/twitter-dataset-graph"
-        DRIVER_MEMORY="8g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="8g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
-#        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
-#        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
+#        DRIVER_MEMORY="8g" # Amount of memory to use for the driver process,
+#        EXECUTOR_MEMORY="8g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"        
 
         echo ""
@@ -344,7 +262,7 @@ case ${OP_TYPE} in
 
         echo ""
         echo "  running ${OP_TYPE} experiment ..."      
-        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} --driver-memory ${DRIVER_MEMORY} --executor-memory ${EXECUTOR_MEMORY} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
+        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
 #        source ./_check.sh > ${DIR_SYS}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}-after.dat
@@ -358,8 +276,8 @@ case ${OP_TYPE} in
         NETWORK="host" 
         DOCKER_IMAGE_SERVER="cloudsuite/in-memory-analytics"
         DOCKER_IMAGE_DATAST="cloudsuite/movielens-dataset"
-        DRIVER_MEMORY="8g" # Amount of memory to use for the driver process,
-        EXECUTOR_MEMORY="8g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
+        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
+        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g). 
 #        DRIVER_MEMORY="1g" # Amount of memory to use for the driver process,
 #        EXECUTOR_MEMORY="4g" # Amount of memory to use per executor process (e.g. 2g, 8g).
         NAME_DATA="data"
@@ -390,6 +308,7 @@ case ${OP_TYPE} in
         # run 
         echo ""
         echo "  running ${OP_TYPE} experiment ..."      
+#        sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} /data/ml-latest-small /data/myratings.csv --driver-memory ${DRIVER_MEMORY} --executor-memory ${EXECUTOR_MEMORY} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
         sudo perf stat -e ${PMU_S} -o ${DIR_PERF}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat -a docker run --rm --volumes-from ${NAME_DATA} ${DOCKER_IMAGE_SERVER} /data/ml-latest-small /data/myratings.csv --driver-memory ${DRIVER_MEMORY} --executor-memory ${EXECUTOR_MEMORY} > ${DIR_RUN}/${OP_TYPE}/${HP_TYPE}/${OP_TYPE}-${HP_TYPE}-${MFRG_TYPE}.dat
 
         # system status
@@ -577,7 +496,7 @@ case ${OP_TYPE} in
         ;;
 esac
 
-PERF="perf"
-PERF_PID=$(pgrep ${PERF})
-kill -TERM ${PERF_PID}
+SON_EXPR="son_expr"
+SON_EXPR_PID=$(pgrep ${SON_EXPR})
+kill -2 ${SON_EXPR_PID}
 

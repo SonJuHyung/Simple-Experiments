@@ -33,13 +33,12 @@
 fieldlength=100
 fieldcount=10
 
-recordcount=4000000
-#recordcount=10000000
+recordcount=12000000
+#recordcount=4000000
 
 # number of operation 
-#operationcount=10000000
 operationcount=1000000
-
+#operationcount=10000000
 
 # FIXME
 # The size of each field (in bytes)
